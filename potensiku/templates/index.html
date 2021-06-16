@@ -1,25 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    {% load static %}
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}"/>
-    <link rel="stylesheet" href="{% static "animate/animate.css" %}"/>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <style>
-        html, body {
-            height: 100%;
-        }
-
-        .bg-potensi {
-            background-image: url("{% static "image-asset/potensi2Resized.jpg" %}");
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-    </style>
-</head>
+{% include "header_common.html" %}
 <body>
 <div class="container-fluid p-0 h-100 animate__animated animate__fadeIn">
     <div class="row gx-0 h-100">
@@ -55,7 +36,7 @@
         <div class="col p-0">
             <div class="d-flex align-items-end flex-column h-100">
                 <div class="mt-auto p-2 w-100 bg-potensi"
-                     style="clip-path: circle(100% at 100% 100%); height: 92% !important;">Flex
+                     style="clip-path: circle(95% at 100% 100%); height: 92% !important;">Flex
                     item
                 </div>
             </div>
@@ -63,8 +44,6 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-        crossorigin="anonymous"></script>
+{% include "footer_common.html" %}
 </body>
 </html>
