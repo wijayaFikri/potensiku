@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include "header_common.html" %}
+<body>
+<style>
+    .gradient-form {
+        background: rgb(13, 61, 99);
+        background: linear-gradient(90deg, rgba(13, 61, 99, 1) 0%, rgba(36, 92, 127, 1) 30%, rgba(107, 230, 255, 1) 100%);
+    }
+
+    .gradient-form-reversed {
+        background: rgb(13, 61, 99);
+        background: linear-gradient(270deg, rgba(13, 61, 99, 1) 0%, rgba(36, 92, 127, 1) 30%, rgba(107, 230, 255, 1) 100%);
+    }
+
+    .flat-background {
+        background: #61D0EB;
+    }
+
+</style>
+<div class="container-fluid p-0 h-100 animate__animated animate__fadeIn">
+    <div class="row gx-0 h-100">
+        <div class="col-2 gradient-form h-100 position-fixed"></div>
+        <div class="col-2 h-100"></div>
+        <div class="col-8">
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-outline-info mt-4 me-4" data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop">Instruksi Pengerjaan
+                </button>
+            </div>
+
+            <h1 style="color: #2D698B" class="mb-4 mt-4 text-center">Potensi Bidang</h1>
+            <div class="px-5">
+                <form>
+                    <input type="hidden" id="questionAnswer">
+                    {% for question in questions %}
+
+                        <div class="mb-3">
+                            <p class="mb-0" style="color: #2D698B" class="mb-4 mt-5">{{ question.question }} </p>
+                            <input type="hidden" id="{{ question.id }}" value="{{ question.id }}">
+                            <input type="hidden" id="{{ question.category }}-{{ forloop.counter }}"
+                                   value="{{ question.category }}">
+                            <div class="form-check form-check-inline ms-3">
+                                <input class="form-check-input" type="checkbox"
+                                       id="inlineCheckbox{{ forloop.counter }}yes"
+                                       onclick="processCheckbox({{ forloop.counter }},'Y')" value="option1">
+                                <label class="form-check-label" for="inlineCheckbox{{ forloop.counter }}yes">Ya</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox"
+                                       id="inlineCheckbox{{ forloop.counter }}no"
+                                       onclick="processCheckbox({{ forloop.counter }},'N')" value="option2">
+                                <label class="form-check-label"
+                                       for="inlineCheckbox{{ forloop.counter }}no">Tidak</label>
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary mt-4 me-4 mb-4 p-2" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop">Konfirmasi
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+        <div class="col-2 gradient-form-reversed h-100 position-fixed end-0">
+        </div>
+        <div class="col-2 h-100">
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Instruksi Pengerjaan</h5>
+            </div>
+            <div class="modal-body">
+                Tugas Anda adalah membaca pernyataan-pernyataan yang ada. Jika pertanyaan tersebut sesuai dengan diri
+                Anda, maka pilih “Ya”, jika tidak sesuai maka pilih “Tidak”. Tidak ada jawaban benar atau salah, yang
+                penting Anda menjawab sesuai dengan diri Anda.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Saya Mengerti</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "footer_common.html" %}
+<script>
+    var myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'), null);
+    myModal.show();
+
+    function processCheckbox(counter, selectedOption) {
+        if (selectedOption === "Y") {
+            document.getElementById("inlineCheckbox" + counter + "yes").checked = true;
+            document.getElementById("inlineCheckbox" + counter + "no").checked = false;
+        } else {
+            document.getElementById("inlineCheckbox" + counter + "yes").checked = false;
+            document.getElementById("inlineCheckbox" + counter + "no").checked = true;
+        }
+
+    }
+</script>
+</body>
+</html>
