@@ -2,6 +2,8 @@
 <html lang="en">
 {% include "header_common.html" %}
 <body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+</script>
 <style>
     .gradient-form {
         background: rgb(13, 61, 99);
@@ -43,13 +45,15 @@
                             <div class="form-check form-check-inline ms-3">
                                 <input class="form-check-input" type="checkbox"
                                        id="inlineCheckbox{{ forloop.counter }}yes"
-                                       onclick="processCheckbox({{ forloop.counter }},'Y')" value="option1">
+                                       onclick="processCheckbox({{ question.id }},{{ forloop.counter }},'Y')"
+                                       value="option1">
                                 <label class="form-check-label" for="inlineCheckbox{{ forloop.counter }}yes">Ya</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox"
                                        id="inlineCheckbox{{ forloop.counter }}no"
-                                       onclick="processCheckbox({{ forloop.counter }},'N')" value="option2">
+                                       onclick="processCheckbox({{ question.id }},{{ forloop.counter }},'N')"
+                                       value="option2">
                                 <label class="form-check-label"
                                        for="inlineCheckbox{{ forloop.counter }}no">Tidak</label>
                             </div>
@@ -100,16 +104,34 @@
     var myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'), null);
     myModal.show();
 
-    function processCheckbox(counter, selectedOption) {
+    function processCheckbox(question_id, counter, selectedOption) {
         if (selectedOption === "Y") {
             document.getElementById("inlineCheckbox" + counter + "yes").checked = true;
             document.getElementById("inlineCheckbox" + counter + "no").checked = false;
+            send_answer(question_id, 1);
         } else {
             document.getElementById("inlineCheckbox" + counter + "yes").checked = false;
             document.getElementById("inlineCheckbox" + counter + "no").checked = true;
+            send_answer(question_id, 0);
         }
 
     }
+
+    function send_answer(param_question_id, user_answer) {
+        // $.get("/store_answer", function (data, status) {
+        //     alert("Data: " + data + "\nStatus: " + status);
+        // });
+        $.post("/store_answer",
+            {
+                question_id: param_question_id.value,
+                answer: user_answer,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            function (data, status) {
+                //do nothing
+            });
+    }
 </script>
+
 </body>
 </html>

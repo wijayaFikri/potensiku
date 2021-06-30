@@ -31,38 +31,61 @@
             <div class="d-flex justify-content-between h-100"></div>
         </div>
         <div class="col-9">
-            <form class="h-100 mt-4">
+            <form class="h-100 mt-4 needs-validation" method="post" action="register" novalidate>
+                {% csrf_token %}
                 <div class="p-2 d-flex flex-column align-items-center h-100 justify-content-center">
                     <h1 style="color: #2D698B" class="mb-4">Form Data Diri</h1>
 
-                    <input class="form-control mb-3" style="width: 60%;" type="text"
-                           placeholder="Nama lengkap beserta gelar">
-                    <input class="form-control mb-3" style="width: 60%;" type="text" placeholder="NIP">
-                    <input class="form-control mb-3" style="width: 60%;" type="text" placeholder="Tempat Tanggal Lahir">
-                    <select class="form-select mb-3" style="width: 60%; cursor: pointer;" id="exampleFormControlSelect1">
-                        <option>Status Perkawinan</option>
-                        <option>Kawin</option>
-                        <option>Belum Kawin</option>
-                        <option>Cerai</option>
+                    <input name="full_name" class="form-control mb-3" style="width: 60%;" type="text"
+                           placeholder="Nama lengkap beserta gelar" required>
+                    <div class="invalid-feedback" style="width:60%; margin-top: -1rem;">
+                        Mohon isi nama lengkap anda beserta gelar
+                    </div>
+                    <input name="NIP" class="form-control mb-3" style="width: 60%;" type="text" placeholder="NIP"
+                           required>
+                    <div class="invalid-feedback" style="width:60%; margin-top: -1rem;">
+                        Mohon isi NIP sesuai dengan ktp
+                    </div>
+                    <input name="ttl" class="form-control mb-3" style="width: 60%;" type="text"
+                           placeholder="Tempat Tanggal Lahir" required>
+                    <div class="invalid-feedback" style="width:60%; margin-top: -1rem;">
+                        Mohon isi tempat tanggal lahir anda
+                    </div>
+                    <select name="status_perkawinan" class="form-select mb-3" style="width: 60%; cursor: pointer;"
+                            id="exampleFormControlSelect1" required>
+                        <option selected disabled value="">Status Perkawinan</option>
+                        <option value="Kawin">Kawin</option>
+                        <option value="Belum Kawin">Belum Kawin</option>
+                        <option value="Cerai">Cerai</option>
                     </select>
-                    <select class="form-select mb-3" style="width: 60%; cursor: pointer;" id="exampleFormControlSelect1">
-                        <option>Agama</option>
-                        <option>Islam</option>
-                        <option>Kristen</option>
-                        <option>Katolik</option>
-                        <option>Budha</option>
-                        <option>Hindu</option>
+                     <div class="invalid-feedback" style="width:60%; margin-top: -1rem;">
+                        Mohon pilih status perkawinan anda
+                    </div>
+                    <select name="agama" class="form-select mb-3" style="width: 60%; cursor: pointer;"
+                            id="exampleFormControlSelect2" required>
+                        <option selected disabled value="">Agama</option>
+                        <option value="Islam">Islam</option>
+                        <option value="Kristen">Kristen</option>
+                        <option value="Katolik">Katolik</option>
+                        <option value="Budha">Budha</option>
+                        <option value="Hindu">Hindu</option>
                     </select>
+                     <div class="invalid-feedback" style="width:60%; margin-top: -1rem;">
+                        Mohon pilih agama anda
+                    </div>
                     <div style="width: 60%;">
                         <label class="mb-1" style="color: #2D698B">Pendidikan Formal</label>
-                        <input class="form-control mb-3" type="text"
+                        <input name="pendidikanSma" class="form-control mb-3" type="text"
                                placeholder="SMA">
                     </div>
-                    <input class="form-control mb-3" style="width: 60%;" type="text" placeholder="D3">
-                    <input class="form-control mb-3" style="width: 60%;" type="text" placeholder="S1">
-                    <input class="form-control mb-3" style="width: 60%;" type="text" placeholder="S2">
+                    <input name="pendidikanD3" class="form-control mb-3" style="width: 60%;" type="text"
+                           placeholder="D3">
+                    <input name="pendidikanS1" class="form-control mb-3" style="width: 60%;" type="text"
+                           placeholder="S1">
+                    <input name="pendidikanS2" class="form-control mb-3" style="width: 60%;" type="text"
+                           placeholder="S2">
                     <div style="width: 60%;" class="mb-3">
-                        <input class="form-control" type="text"
+                        <input name="pendidikanS3" class="form-control" type="text"
                                placeholder="S3">
                         <small id="passwordHelpBlock" class="form-text text-muted">
                             Boleh dikosongkan jika tidak ada
@@ -72,11 +95,12 @@
                     <div style="width: 60%;">
                         <label class="mb-1" style="color: #2D698B">Rekam Jejak Jabatan (diurutkan dari yang
                             terbaru)</label>
-                        <input class="form-control mb-3" type="text" placeholder="Jabatan I">
+                        <input name="jabatanI" class="form-control mb-3" type="text" placeholder="Jabatan I">
                     </div>
-                    <input class="form-control mb-3" style="width: 60%;" type="text" placeholder="Jabatan II">
+                    <input name="jabatanII" class="form-control mb-3" style="width: 60%;" type="text"
+                           placeholder="Jabatan II">
                     <div style="width: 60%;" class="mb-3">
-                        <input class="form-control" type="text" placeholder="Jabatan III">
+                        <input name="jabatanIII" class="form-control" type="text" placeholder="Jabatan III">
                         <small id="passwordHelpBlock" class="form-text text-muted">
                             Boleh dikosongkan jika tidak ada
                         </small>
@@ -85,11 +109,12 @@
                     <div style="width: 60%;">
                         <label class="mb-1" style="color: #2D698B">Riwayat Pengembangan Kompetensi
                             (seminar, diklat, kursus, penataran, atau magang)</label>
-                        <input class="form-control mb-3" type="text" placeholder="Riwayat I">
+                        <input name="riwayatI" class="form-control mb-3" type="text" placeholder="Riwayat I">
                     </div>
-                    <input class="form-control mb-3" style="width: 60%;" type="text" placeholder="Riwayat II">
+                    <input name="riwayatII" class="form-control mb-3" style="width: 60%;" type="text"
+                           placeholder="RiwayatII">
                     <div style="width: 60%;" class="mb-3">
-                        <input class="form-control" type="text" placeholder="Riwayat III">
+                        <input name="riwayatIII" class="form-control" type="text" placeholder="Riwayat III">
                         <small id="passwordHelpBlock" class="form-text text-muted">
                             Boleh dikosongkan jika tidak ada
                         </small>
@@ -98,11 +123,12 @@
                     <div style="width: 60%;">
                         <label class="mb-1" style="color: #2D698B">Prestasi / Penghargaan (diurutkan dari yang
                             terbaru)</label>
-                        <input class="form-control mb-3" type="text" placeholder="Penghargaan I">
+                        <input name="PenghargaanI" class="form-control mb-3" type="text" placeholder="Penghargaan I">
                     </div>
-                    <input class="form-control mb-3" style="width: 60%;" type="text" placeholder="Penghargaan II">
+                    <input name="PenghargaanII" class="form-control mb-3" style="width: 60%;" type="text"
+                           placeholder="Penghargaan II">
                     <div style="width: 60%;" class="mb-3">
-                        <input class="form-control" type="text" placeholder="Penghargaan III">
+                        <input name="PenghargaanIII" class="form-control" type="text" placeholder="Penghargaan III">
                         <small id="passwordHelpBlock" class="form-text text-muted">
                             Boleh dikosongkan jika tidak ada
                         </small>
@@ -118,5 +144,26 @@
 </div>
 
 {% include "footer_common.html" %}
+<script>
+    (function () {
+        'use strict';
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation');
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
 </body>
 </html>

@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'sarah.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'django',
+        'NAME': 'potensiku',
         'USER': 'root',
         'PASSWORD': 'password',
         'HOST': '127.0.0.1',
@@ -136,3 +136,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static-deploy")
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
