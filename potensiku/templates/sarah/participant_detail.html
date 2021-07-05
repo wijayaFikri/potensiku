@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include "header_common.html" %}
+<body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% load static %}
+<style>
+    .gradient-form {
+        background: rgb(13, 61, 99);
+        background: linear-gradient(90deg, rgba(13, 61, 99, 1) 0%, rgba(36, 92, 127, 1) 30%, rgba(107, 230, 255, 1) 100%);
+    }
+
+    .flat-background {
+        background: #61D0EB;
+    }
+
+    * {
+        font-family: 'Nunito', sans-serif;
+    }
+
+</style>
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="{% static "image-asset/potensiku-icon.jpeg" %}" alt="" width="30" height="24"
+                 class="d-inline-block align-text-top">
+            Potensiku
+        </a>
+        <form class="d-flex">
+            {% csrf_token %}
+            <button class="btn btn-outline-danger" type="submit">Logout</button>
+        </form>
+    </div>
+</nav>
+<div class="container-fluid p-0 animate__animated animate__fadeIn gradient-form min-vh-100">
+    <div class="d-flex justify-content-center w-100">
+        <div class=" my-5 d-flex flex-column bg-white rounded shadow-lg pb-5"
+             style="width: 85%">
+
+            <p class="h1 text-center mt-5 mb-3">Detail Peserta</p>
+
+            <div class="container px-4">
+                <div class="row gx-3">
+                    <div class="col p-3 bg-white rounded-3 border me-3">
+                        <p class="h4 text-center">Data Diri Peserta</p>
+                        <div>
+
+                            {% for forms in form_data %}
+                                <div class="row px-5">
+                                    <div class="col-6 fw-bold" style="color: #2D698B">
+                                        {{ forms.label }}
+                                    </div>
+                                    <div class="col-6">
+                                        {% if forms.type == "list" %}
+                                            {% for data_list_value in forms.data %}
+                                                <p class="m-0"> {{ data_list_value }}</p>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ forms.data }}
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                    <div class="col p-3 bg-white rounded-3 border">
+                        <p class="h4 text-center">Hasil Test Peserta</p>
+                        <div class="mb-3">
+                            <canvas id="myChart"></canvas>
+                        </div>
+                        <table class="table">
+                            <thead>
+                            <tr style="background: #2D698B" class="text-white border-start border-end">
+                                <th scope="col">R</th>
+                                <th scope="col">I</th>
+                                <th scope="col">A</th>
+                                <th scope="col">S</th>
+                                <th scope="col">E</th>
+                                <th scope="col">C</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="border-start border-end">
+                                <td>{{ result.r }}</td>
+                                <td>{{ result.i }}</td>
+                                <td>{{ result.a }}</td>
+                                <td>{{ result.s }}</td>
+                                <td>{{ result.e }}</td>
+                                <td>{{ result.c }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% include "footer_common.html" %}
+<script>
+    const labels = [
+        'R',
+        'I',
+        'A',
+        'S',
+        'E',
+        'C',
+    ];
+    const data = {
+        labels: labels,
+        datasets: [{
+            label: 'Nilai Jawaban Peserta',
+            backgroundColor: 'rgb(106,228,253)',
+            borderColor: 'rgb(106,228,253)',
+            data: [{{ result.r }}, {{ result.i }}, {{ result.a }}, {{ result.s }}, {{ result.e }}, {{ result.c }}],
+        }]
+    };
+    const config = {
+        type: 'bar',
+        data,
+        options: {}
+    };
+
+    var myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+    );
+</script>
+</body>
+</html>

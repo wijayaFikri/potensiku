@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include "header_common.html" %}
+<body>
+<style>
+    .gradient-form {
+        background: rgb(13, 61, 99);
+        background: linear-gradient(90deg, rgba(13, 61, 99, 1) 0%, rgba(36, 92, 127, 1) 30%, rgba(107, 230, 255, 1) 100%);
+    }
+
+    .flat-background {
+        background: #61D0EB;
+    }
+
+</style>
+<div class="container-fluid p-0 h-100 animate__animated animate__fadeIn gradient-form">
+    <div class="d-flex align-items-center justify-content-center w-100 h-100">
+        <div class="d-flex flex-column px-4 justify-content-center align-items-center bg-white rounded shadow-lg w-50 h-50">
+            <p class="h1" style="font-family: 'Nunito', sans-serif;">Terima kasih sudah berpartisipasi</p>
+            <p class="text-muted">Data diri dan jawaban anda sudah berhasil terkirim pada system. Terima kasih sudah mengikuti test potensi
+                diri.</p>
+            <form action="redirect">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary  py-2 px-5 mt-5">Selesai
+                </button>
+            </form>
+        </div>
+
+    </div>
+</div>
+{% include "footer_common.html" %}
+</body>
+</html>

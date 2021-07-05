@@ -40,7 +40,20 @@ class Participant(models.Model):
     token = models.CharField(max_length=255)
     person = models.OneToOneField(Person, on_delete=models.CASCADE)
     answers = models.ManyToManyField(Answer)
+    done = models.BooleanField(default=False)
 
 
 class Token(models.Model):
     token = models.CharField(max_length=255)
+
+
+class ParticipantResult:
+    token = str
+    name = str
+    nip = str
+    r = 0
+    i = 0
+    a = 0
+    s = 0
+    e = 0
+    c = 0

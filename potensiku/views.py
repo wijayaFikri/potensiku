@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from potensiku.questions import *
 from potensiku.models import *
 import json
+from django.contrib.auth import authenticate
 from types import SimpleNamespace
 
 
@@ -10,10 +11,15 @@ def index(request):
     if request.session.get("token") is not None:
         return redirect(start_fill_form)
     else:
-        context = {
-            "token": ""
-        }
-        return render(request, 'index.html')
+        context = {}
+        if "token_done_message" in request.session:
+            context['error_message'] = request.session.get("token_done_message")
+            del request.session['token_done_message']
+        return render(request, 'index.html', context)
+
+
+def temp_view(request):
+    return render(request, 'sarah/participant_detail.html')
 
 
 def start_fill_form(request):
@@ -26,9 +32,12 @@ def start_fill_form(request):
         is_exist = Participant.objects.filter(token=token_id).exists()
         if is_exist:
             participant = Participant.objects.get(token=token_id)
-            if participant is not None:
-                request.session['token'] = participant.token
-                return redirect(question_view)
+            if participant.done:
+                request.session[
+                    "token_done_message"] = "token tersebut telah digunakan dan sudah selesai mengerjakan test,mohon ganti token anda."
+                return redirect('index')
+            request.session['token'] = participant.token
+            return redirect(question_view)
         request.session['token'] = token_id
         return render(request, 'identity/index.html')
     else:
@@ -46,6 +55,7 @@ def register_participant(request):
     person.ttl = request.POST.get("ttl")
     person.marriage_status = request.POST.get("status_perkawinan")
     person.religion = request.POST.get("agama")
+    person.address = request.POST.get("address")
     person.educationSMA = request.POST.get("pendidikanSma")
     person.educationD3 = request.POST.get("pendidikanD3")
     person.educationS1 = request.POST.get("pendidikanS1")
@@ -68,18 +78,24 @@ def register_participant(request):
 
 
 def question_view(request):
-    for q in question_list:
-        question = Question(id=q['id'], question=q['question'], category=['category'])
-        question.save()
+    context_list = get_question()
 
-    context = {
-        "questions": question_list,
-    }
     token_id = request.session.get("token")
     participant = Participant.objects.get(token=token_id)
     answers = participant.answers.all()
     liste = list(answers)
-    print(liste)
+    for question in context_list:
+        for answer in liste:
+            if answer.question_id == question["id"]:
+                question["answer"] = answer.answer
+
+    context = {
+        "questions": context_list,
+    }
+    if request.session.get('confirm_error') is not None:
+        context["error_message"] = request.session.get('confirm_error')
+        del request.session['confirm_error']
+
     return render(request, 'questions/index.html', context)
 
 
@@ -93,7 +109,25 @@ def store_answer(request):
         old_answer.delete()
     answer = Answer.objects.create(question_id=request.POST.get("question_id"), answer=request.POST.get("answer"))
     participant.answers.add(answer)
-    list_answer = list(participant.answers.all())
-    print(list_answer)
     if request.method == 'POST' and request.is_ajax():
         return HttpResponse(json.dumps({'name': "ok"}), content_type="application/json")
+
+
+def confirm(request):
+    token_id = request.session.get("token")
+    participant = Participant.objects.get(token=token_id)
+    answers = participant.answers.all()
+    liste = list(answers)
+    if len(liste) < 42:
+        request.session[
+            'confirm_error'] = "System mendeteksi masih ada" \
+                               " pertanyaan yang belum terjawab, mohon periksa kembali jawaban anda."
+        return redirect('question')
+    participant.done = True
+    participant.save()
+    request.session.flush()
+    return render(request, 'finish/index.html')
+
+
+def redirect_to_home(request):
+    return redirect('index')
