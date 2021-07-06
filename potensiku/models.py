@@ -2,6 +2,9 @@ from django.db import models
 
 
 # Create your models here.
+from django.utils import timezone
+
+
 class Question(models.Model):
     id = models.CharField(max_length=255, primary_key=True)
     question = models.CharField(max_length=255)
@@ -45,6 +48,8 @@ class Participant(models.Model):
 
 class Token(models.Model):
     token = models.CharField(max_length=255)
+    is_used = models.BooleanField(default=False)
+    created_date = models.DateTimeField(default=timezone.now)
 
 
 class ParticipantResult:

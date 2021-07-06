@@ -14,5 +14,7 @@ urlpatterns = [
     path('sarah/login', sarah_views.login_screen, name='sarah_login'),
     path('sarah/authenticate', sarah_views.login_sarah, name='sarah_authenticate'),
     path('sarah/', sarah_views.index, name='sarah_index'),
-    path('sarah/detail', sarah_views.participant_detail, name='participant_detail')
+    path('sarah/detail', sarah_views.participant_detail, name='participant_detail'),
+    path('sarah/generate/token', sarah_views.generate_token_screen, name='generate_token'),
+    path('sarah/logout', sarah_views.logout_view, name='sarah_logout'),
 ]

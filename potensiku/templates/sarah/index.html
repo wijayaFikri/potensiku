@@ -18,19 +18,7 @@
     }
 
 </style>
-<nav class="navbar navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-            <img src="{% static "image-asset/potensiku-icon.jpeg" %}" alt="" width="30" height="24"
-                 class="d-inline-block align-text-top">
-            Potensiku
-        </a>
-        <form class="d-flex">
-            {% csrf_token %}
-            <button class="btn btn-outline-danger" type="submit">Logout</button>
-        </form>
-    </div>
-</nav>
+{% include 'sarah/navbar.html' %}
 <div class="container-fluid p-0 h-100 animate__animated animate__fadeIn gradient-form">
     <div class="d-flex justify-content-center w-100 h-100">
         <div class=" my-5 d-flex flex-column bg-white rounded shadow-lg"

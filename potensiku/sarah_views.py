@@ -3,8 +3,9 @@ from django.shortcuts import render, HttpResponse, redirect
 from potensiku.questions import *
 from potensiku.models import *
 import json
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from types import SimpleNamespace
+import uuid
 
 
 def login_sarah(request):
@@ -13,7 +14,13 @@ def login_sarah(request):
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
-        return redirect('sarah_index')
+        if "nexturl" in request.session:
+            nexturl = request.session.get("nexturl")
+            del request.session["nexturl"]
+            return redirect(nexturl)
+        else:
+            return redirect('sarah_index')
+
     else:
         return redirect('sarah_login')
 
@@ -21,6 +28,8 @@ def login_sarah(request):
 def login_screen(request):
     if request.user.is_authenticated:
         return redirect('sarah_index')
+    if request.GET.get('next') is not None:
+        request.session["nexturl"] = request.GET.get('next')
     return render(request, 'sarah/login.html')
 
 
@@ -114,6 +123,31 @@ def participant_detail(request):
         "result": participant_result
     }
     return render(request, 'sarah/participant_detail.html', context)
+
+
+@login_required(login_url='/sarah/login')
+def generate_token_screen(request):
+    context = {}
+
+    if request.GET.get("number_of_token") is not None:
+        for i in range(int(request.GET.get("number_of_token"))):
+            new_token_key = uuid.uuid4().hex[:9].upper()
+            check_exist = Token.objects.filter(token=new_token_key).exists()
+            while check_exist:
+                new_token_key = uuid.uuid4().hex[:9].upper()
+                check_exist = Token.objects.filter(token=new_token_key).exists()
+            new_token = Token(token=new_token_key)
+            new_token.save()
+        context["message"] = request.GET.get("number_of_token") + " Token berhasil dibuat"
+
+    tokens = list(Token.objects.all().order_by("-created_date"))
+    context["tokens"] = tokens
+    return render(request, 'sarah/generate_token.html', context)
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('sarah_login')
 
 
 def build_detail_form():
