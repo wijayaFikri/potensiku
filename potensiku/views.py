@@ -38,7 +38,7 @@ def start_fill_form(request):
                 return redirect('index')
             request.session['token'] = participant.token
             return redirect(question_view)
-        new_token = Token.objects.get(token_id)
+        new_token = Token.objects.get(token=token_id)
         new_token.is_used = True
         new_token.save()
         request.session['token'] = token_id
