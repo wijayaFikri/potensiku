@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from . import views
-from . import sarah_views
+from . import back_office_views
 from django.urls import path
 
 urlpatterns = [
@@ -11,10 +11,10 @@ urlpatterns = [
     path('register', views.register_participant, name='register'),
     path('confirm', views.confirm, name='confirm'),
     path('redirect', views.redirect_to_home, name='redirect'),
-    path('sarah/login', sarah_views.login_screen, name='sarah_login'),
-    path('sarah/authenticate', sarah_views.login_sarah, name='sarah_authenticate'),
-    path('sarah/', sarah_views.index, name='sarah_index'),
-    path('sarah/detail', sarah_views.participant_detail, name='participant_detail'),
-    path('sarah/generate/token', sarah_views.generate_token_screen, name='generate_token'),
-    path('sarah/logout', sarah_views.logout_view, name='sarah_logout'),
+    path('potensiku_project/login', back_office_views.login_screen, name='back_office_login'),
+    path('potensiku_project/authenticate', back_office_views.login_backoffice, name='back_office_authenticate'),
+    path('potensiku_project/', back_office_views.index, name='back_office_index'),
+    path('potensiku_project/detail', back_office_views.participant_detail, name='participant_detail'),
+    path('potensiku_project/generate/token', back_office_views.generate_token_screen, name='generate_token'),
+    path('potensiku_project/logout', back_office_views.logout_view, name='back_office_logout'),
 ]

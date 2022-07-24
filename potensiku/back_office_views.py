@@ -8,7 +8,7 @@ from types import SimpleNamespace
 import uuid
 
 
-def login_sarah(request):
+def login_backoffice(request):
     username = request.POST.get("username")
     password = request.POST.get("password")
     user = authenticate(request, username=username, password=password)
@@ -19,21 +19,21 @@ def login_sarah(request):
             del request.session["nexturl"]
             return redirect(nexturl)
         else:
-            return redirect('sarah_index')
+            return redirect('back_office_index')
 
     else:
-        return redirect('sarah_login')
+        return redirect('back_office_login')
 
 
 def login_screen(request):
     if request.user.is_authenticated:
-        return redirect('sarah_index')
+        return redirect('back_office_index')
     if request.GET.get('next') is not None:
         request.session["nexturl"] = request.GET.get('next')
-    return render(request, 'sarah/login.html')
+    return render(request, 'potensiku_project/login.html')
 
 
-@login_required(login_url='/sarah/login')
+@login_required(login_url='/potensiku_project/login')
 def index(request):
     participant_list = list(Participant.objects.filter(done=True))
     participant_result_list = []
@@ -61,10 +61,10 @@ def index(request):
     context = {
         "participants": participant_result_list,
     }
-    return render(request, 'sarah/index.html', context)
+    return render(request, 'potensiku_project/index.html', context)
 
 
-@login_required(login_url='/sarah/login')
+@login_required(login_url='/potensiku_project/login')
 def participant_detail(request):
     token = request.POST.get("token")
     # token = "axby"
@@ -122,10 +122,10 @@ def participant_detail(request):
         "form_data": forms,
         "result": participant_result
     }
-    return render(request, 'sarah/participant_detail.html', context)
+    return render(request, 'potensiku_project/participant_detail.html', context)
 
 
-@login_required(login_url='/sarah/login')
+@login_required(login_url='/potensiku_project/login')
 def generate_token_screen(request):
     context = {}
 
@@ -142,12 +142,12 @@ def generate_token_screen(request):
 
     tokens = list(Token.objects.all().order_by("-created_date"))
     context["tokens"] = tokens
-    return render(request, 'sarah/generate_token.html', context)
+    return render(request, 'potensiku_project/generate_token.html', context)
 
 
 def logout_view(request):
     logout(request)
-    return redirect('sarah_login')
+    return redirect('back_office_login')
 
 
 def build_detail_form():

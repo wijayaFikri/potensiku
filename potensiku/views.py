@@ -19,7 +19,7 @@ def index(request):
 
 
 def temp_view(request):
-    return render(request, 'sarah/participant_detail.html')
+    return render(request, 'potensiku_project/participant_detail.html')
 
 
 def start_fill_form(request):
