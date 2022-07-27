@@ -33,7 +33,7 @@ def login_screen(request):
     return render(request, 'potensiku_project/login.html')
 
 
-@login_required(login_url='/potensiku_project/login')
+@login_required(login_url='/backoffice/login')
 def index(request):
     participant_list = list(Participant.objects.filter(done=True))
     participant_result_list = []
@@ -64,7 +64,7 @@ def index(request):
     return render(request, 'potensiku_project/index.html', context)
 
 
-@login_required(login_url='/potensiku_project/login')
+@login_required(login_url='/backoffice/login')
 def participant_detail(request):
     token = request.POST.get("token")
     # token = "axby"
@@ -125,7 +125,7 @@ def participant_detail(request):
     return render(request, 'potensiku_project/participant_detail.html', context)
 
 
-@login_required(login_url='/potensiku_project/login')
+@login_required(login_url='/backoffice/login')
 def generate_token_screen(request):
     context = {}
 
