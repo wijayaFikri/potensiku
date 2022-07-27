@@ -23,16 +23,9 @@ class Person(models.Model):
     educationS1 = models.CharField(max_length=255)
     educationS2 = models.CharField(max_length=255)
     educationS3 = models.CharField(max_length=255)
-    title1 = models.CharField(max_length=255)
-    title2 = models.CharField(max_length=255)
-    title3 = models.CharField(max_length=255)
     history1 = models.CharField(max_length=255)
     history2 = models.CharField(max_length=255)
     history3 = models.CharField(max_length=255)
-    achievement1 = models.CharField(max_length=255)
-    achievement2 = models.CharField(max_length=255)
-    achievement3 = models.CharField(max_length=255)
-
 
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.RESTRICT)

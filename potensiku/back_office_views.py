@@ -85,18 +85,9 @@ def participant_detail(request):
     formal_education.append("S2 - " + participant.person.educationS2)
     formal_education.append("S3 - " + participant.person.educationS3)
     forms[6]["data"] = formal_education
-    # rekam jejak jabatan
-    position_history = []
-    position_history.append(participant.person.title1)
-    position_history.append(participant.person.title2)
-    position_history.append(participant.person.title3)
-    forms[7]["data"] = position_history
     # riwayat pengembangan
     self_improvement = [participant.person.history1, participant.person.history2, participant.person.history3]
-    forms[8]["data"] = self_improvement
-    # penghargaan
-    achievements = [participant.person.achievement1, participant.person.achievement2, participant.person.achievement3]
-    forms[9]["data"] = achievements
+    forms[7]["data"] = self_improvement
 
     participant_result = ParticipantResult()
     participant_result.token = participant.token
@@ -182,16 +173,7 @@ def build_detail_form():
             "type": "list"
         },
         {
-            "label": "Rekam Jejak Jabatan",
-            "type": "list"
-
-        },
-        {
             "label": "Riwayat Pengembangan Kompetensi (seminar, diklat, kursus, penataran, atau magang)",
-            "type": "list"
-        },
-        {
-            "label": "Prestasi / Penghargaan",
             "type": "list"
         },
     ]
