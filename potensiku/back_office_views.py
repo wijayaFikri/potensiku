@@ -7,6 +7,7 @@ import json
 from django.contrib.auth import authenticate, login, logout
 from types import SimpleNamespace
 import uuid
+from django.db.models import Q
 
 
 def login_backoffice(request):
@@ -36,7 +37,22 @@ def login_screen(request):
 
 @login_required(login_url='/backoffice/login')
 def index(request):
-    participant_list = list(Participant.objects.filter(done=True))
+    participant_list = []
+    if request.GET.get("token") is not None:
+        token = request.GET.get("token")
+        fullname = request.GET.get("fullname")
+        nip = request.GET.get("nip")
+        query = Q()
+        if token != "":
+            query &= Q(token=token)
+        if fullname != "":
+            query &= Q(person__full_name__contains=fullname)
+        if nip != "":
+            query &= Q(person__nip=nip)
+        query &= Q(done=True)
+        participant_list = Participant.objects.filter(query)
+    else:
+        participant_list = list(Participant.objects.filter(done=True))
     participant_result_list = []
     for participant in participant_list:
         participant_result = ParticipantResult()
@@ -87,7 +103,7 @@ def participant_detail(request):
 
     participant_result = calculate_answer(participant)
     test_result_array, test_result_detail = calculate_result(participant_result)
-    test_result =""
+    test_result = ""
     for test_result_label in test_result_array:
         test_result = test_result + test_result_label + ", "
     test_result = test_result[:-2]
@@ -183,7 +199,7 @@ def calculate_result(participant_result: ParticipantResult):
         test_result_detail.append(get_riasec_for_c())
         test_result.append("Conventional")
 
-        return test_result, test_result_detail
+    return test_result, test_result_detail
 
 
 def logout_view(request):

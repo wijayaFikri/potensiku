@@ -91,7 +91,7 @@
                     <div class="col p-3 bg-white rounded-3 border">
                         <p class="px-5" style="text-indent: 1cm"> Dari hasil test yang dilakukan peserta atas nama
                             <b>{{ form_data.0.data }} </b> dapat disimpulkan bahwa
-                            peserta <b>{{ form_data.0.data }} </b> tergolong ke dalam karakteristik {{ test_result }}.
+                            peserta <b>{{ form_data.0.data }} </b> tergolong ke dalam karakteristik <b>{{ test_result }}</b>.
                         </p>
                         <div class="container px-4">
                             <div class="row gx-3 justify-content-center">
@@ -101,23 +101,6 @@
                                     <p>{{ test_result_detail_data.explanation }}</p>
                                     </div>
                                 {% endfor %}
-                               {% comment %} <div class="col p-3 bg-white rounded-3 border me-3">
-                                    <p class="px-5" style="text-indent: 1cm"> Dari hasil test yang dilakukan peserta
-                                        atas nama <b>{{ form_data.0.data }} </b> dapat disimpulkan bahwa
-                                        peserta <b>{{ form_data.0.data }} </b> tergolong ke dalam
-                                        karakteristik {{ test_result }}.</p>
-                                </div>
-                                 <div class="col p-3 bg-white rounded-3 border me-3">
-                                    <p class="px-5" style="text-indent: 1cm"> Dari hasil test yang dilakukan peserta
-                                        atas nama <b>{{ form_data.0.data }} </b> dapat disimpulkan bahwa
-                                        peserta <b>{{ form_data.0.data }} </b> tergolong ke dalam
-                                        karakteristik {{ test_result }}.</p>
-                                </div>
-                                 <div class="col p-3 bg-white rounded-3 border me-3">
-                                    <p class="px-5" style="text-indent: 1cm"> Dari hasil test yang dilakukan peserta
-                                        atas nama <b>{{ form_data.0.data }} </b> dapat disimpulkan bahwa
-                                        peserta <b>{{ form_data.0.data }} </b> tergolong ke dalam
-                                        karakteristik {{ test_result }}.</p>{% endcomment %}
                                 </div>
                             </div>
                         </div>
